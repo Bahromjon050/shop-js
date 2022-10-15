@@ -9,6 +9,9 @@ html{
     overflow-x: hidden;
     scroll-behavior: smooth;
 }
+.modal_new table, th, td{
+    padding: 5px;
+}
 button{
     cursor: pointer;
 }
