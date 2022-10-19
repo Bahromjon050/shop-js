@@ -1,3 +1,7 @@
+// let chegirma = add.reduce((a, b) => a + b.count * b.cheg * b.narxi / 100, 0);
+// let umumiy = add.reduce((a, b) => a + b.narxi * b.count, 0);
+// let total = add.reduce((a, b) => a + b.count * (b.narxi - (b.cheg * (b.narxi / 100))), 0)
+
 let modal = document.querySelector(".modal"),
   modal_body = document.querySelector(".modal_body"),
   modal_data = document.querySelector(".modal_data"),
@@ -6,7 +10,9 @@ let modal = document.querySelector(".modal"),
   cards = document.querySelector(".cards"),
   cate_cards = document.querySelector(".cate_cards"),
   card_cate = document.querySelectorAll(".card_cate"),
-  umumiy1 = document.querySelector("#umumiy1");
+  umumiy1 = document.querySelector("#umumiy1"),
+  umumiy2 = document.querySelector("#umumiy2"),
+  umumiy3 = document.querySelector("#umumiy3");
 
 // 1 cards
 
@@ -546,12 +552,29 @@ let umumiy = document.querySelector(".umumiy"),
   modal_new = document.querySelector(".modal_new"),
   close2 = document.querySelectorAll(".close2"),
   table = document.querySelector(".table"),
-  savatcha = document.querySelector(".savatcha h4");
+  savatcha1 = document.querySelector(".savatcha1 h4"),
+  savatcha2 = document.querySelector(".savatcha2 h4"),
+  savatcha3 = document.querySelector(".savatcha3 h4");
 
-umumiy.addEventListener("click", () => {
+umumiy1.addEventListener("click", () => {
+  UmumiyHissob_All(mevalar);
+});
+window.addEventListener("click", (e) => {
+  if (e.target.getAttribute("class") === "modal modal2 activ") {
+    modal2.classList.remove("activ");
+    modal_body2.classList.remove("activ");
+  }
+});
+umumiy2.addEventListener("click", () => {
+  UmumiyHissob_All(sabzavot);
+});
+umumiy3.addEventListener("click", () => {
+  UmumiyHissob_All(freesh);
+});
+const UmumiyHissob_All = (Array) => {
   modal2.classList.add("activ");
   modal_body2.classList.add("activ");
-  let umumiyhissob = mevalar.filter((val, i) => {
+  let umumiyhissob = Array.filter((val, i) => {
     return val.count > 0;
   });
   table.innerHTML = "";
@@ -562,7 +585,11 @@ umumiy.addEventListener("click", () => {
             <td><img src="${savatt.img}"/></td>
             <td>${savatt.nema}</td>
             <td>${savatt.count}</td>
-            <td><del>${savatt.narxi}</del></td>
+            <td>${parseInt(
+              savatt.narxi - savatt.chegirma * (savatt.narxi / 100)
+            )}
+            <del>${savatt.narxi}</del>
+            </td>
             <td>${
               parseInt(savatt.narxi - (savatt.narxi / 100) * savatt.chegirma) *
               savatt.count
@@ -570,13 +597,17 @@ umumiy.addEventListener("click", () => {
             </tr>
     `;
   });
-  savatcha.innerHTML = `Total: ${umumiyhissob.reduce(
-    (a, b) => a + parseInt(b.narxi - (b.narxi / 100) * b.chegirma) *
-    b.count,
+  savatcha1.innerHTML = `Total: ${umumiyhissob.reduce(
+    (a, b) => a + parseInt(b.narxi - (b.narxi / 100) * b.chegirma) * b.count,
+    0
+  )}so'm`;
+  // let chegirma = add.reduce((a, b) => a + b.count * b.cheg * b.narxi / 100, 0);
+  savatcha2.innerHTML = `Discount: ${umumiyhissob.reduce(
+    (a, b) => a + parseInt((b.count * b.chegirma * b.narxi) / 100),
     0
   )}so'm`;
   modal_new.innerHTML = umumiyhissob;
-});
+};
 
 close2.forEach((btn, i) => {
   btn.addEventListener("click", () => {
